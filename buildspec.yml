@@ -14,6 +14,18 @@ phases:
             - echo "we are in the build block"
             - echo "we will run some tests"
             - grep -Fq "Congratulations" index.html
+            - mkdir -p build
+            - cp -R scripts build/
+            - cp index.html build/
+            - cp LICENSE.txt build/
+            - cp appspec.yml build/
     post_build:
         commands:
             - echo "we are in the post build phase"
+            - echo "Preparing artifacts for S3"
+
+artifacts:
+    files:
+        - '**/*'  # This captures ALL files
+    base-directory: 'build'  # Specifies the directory where artifacts are located
+    discard-paths: no  # Preserves the directory structure
